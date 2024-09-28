@@ -32,7 +32,7 @@ export async function get(key:string):Promise<string|null>{
         response: JSON.stringify(interiumResponse),
         createdAt: interiumResponse.createdAt
     });
-    await client.expire(idempotencyKey, 60);
+    await client.expire(idempotencyKey, 600);
 } 
 
  export async function getIdempotencyResponse(idempotencyKey:string):Promise<string|undefined>{

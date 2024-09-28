@@ -3,7 +3,6 @@ import { idempotencyKeyExists } from "../redisClient";
 import { getIdempotencyResponse } from "../redisClient";
 import { storeIdempotencyKey } from "../redisClient";
 export async function idempotencyMiddleware(req:Request,res:Response,next:NextFunction):Promise<void>{
-   console.log("request received in idempotency middleware");
     const idempotencyKey = req.headers["idempotency-key"];
     if (!idempotencyKey) {
      res.status(400).json({error:"Idempotency key is required"})
@@ -17,6 +16,7 @@ export async function idempotencyMiddleware(req:Request,res:Response,next:NextFu
         return;
     }
     await storeIdempotencyKey(idempotencyKey as string);
+    res.status(202).json({status:"processing",message:"Request is being processed",});
     next();
   } catch (error) {
     console.error("Error in idempotencyMiddleware: ",error);

@@ -15,7 +15,6 @@ const redisClient_2 = require("../redisClient");
 const redisClient_3 = require("../redisClient");
 function idempotencyMiddleware(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log("request received in idempotency middleware");
         const idempotencyKey = req.headers["idempotency-key"];
         if (!idempotencyKey) {
             res.status(400).json({ error: "Idempotency key is required" });
@@ -29,6 +28,7 @@ function idempotencyMiddleware(req, res, next) {
                 return;
             }
             yield (0, redisClient_3.storeIdempotencyKey)(idempotencyKey);
+            res.status(202).json({ status: "processing", message: "Request is being processed", });
             next();
         }
         catch (error) {

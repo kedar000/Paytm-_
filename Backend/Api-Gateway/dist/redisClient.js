@@ -48,7 +48,7 @@ function storeIdempotencyKey(idempotencyKey) {
             response: JSON.stringify(interiumResponse),
             createdAt: interiumResponse.createdAt
         });
-        yield client.expire(idempotencyKey, 60);
+        yield client.expire(idempotencyKey, 600);
     });
 }
 exports.storeIdempotencyKey = storeIdempotencyKey;
